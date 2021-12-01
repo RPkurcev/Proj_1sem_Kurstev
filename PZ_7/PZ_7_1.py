@@ -4,6 +4,5 @@
 S = 'asdjfj'
 z = 0
 for el in S:
-    print(S[z] + ' ')
+    print(S[z] + ' ', end='')
     z += 1
-
