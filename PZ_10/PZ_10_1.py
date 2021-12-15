@@ -17,6 +17,40 @@ f1.close()
 f2 = open('data_2.txt', 'w')
 f2.write("Исходные данные: ")
 f2.write('\n')
-f2.writelines(f1)
+f2.writelines(a)
 f2.close()
 
+# Разбиваем строку и ее значение преобразуем в элементы
+f3 = open('data_1.txt')
+k = f3.read()
+k = k.split()
+for i in range(len(k)):
+    k[i] = int(k[i])
+f3.close()
+
+# Находим минимальный элемент и количество положительных элементов в первой половине
+# в файле data_1.txt и записываем в файл data_2.txt.
+f3 = open('data_1.txt')
+min_el, t = 0, 0
+for i in range(len(k)):
+    min_el = min_el if min_el < k[i] else k[i]
+
+number = len(k)
+one_half = int(number / 2)
+k1 = k[: one_half]  # Определяем первую половину списка
+for a in range(len(k1)):
+    k1[a] = int(k1[a])
+    if k1[a] > 0:
+        t += 1
+
+f4 = open('data_2.txt', 'a')
+f4.write('\n')
+print("Количество элементов:", len(k), '\n'
+      "Минимальный элемент:", min_el, '\n'
+      'Количество положительных элементов в первой половине:', t,
+      file=f4)
+f4.close()
+nums = []
+
+f4 = open("data_2.txt", 'r')
+print(f4.read())
