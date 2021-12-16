@@ -4,9 +4,11 @@ magnit = {'молоко', 'соль', 'сахар', 'печенье', 'сыр'}
 pytorchka = {'мясо', 'молоко', 'соль'}
 perecrestok = {'печенье', 'молоко', 'сыр'}
 
-if 'соль' not in magnit:
+a = {'соль'}
+
+if magnit & a != a:
     print("В магнтите нет соли.")
-if 'соль' not in pytorchka:
+if pytorchka & a != a:
     print("В пятёрочке нет соли.")
-if 'соль' not in perecrestok:
+if perecrestok & a != a:
     print("В перекрёстке нет соли.")
