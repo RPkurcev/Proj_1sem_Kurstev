@@ -7,10 +7,10 @@ mat = [[24, 432, -43],
        [34, 112, -500]]
 
 two_half = mat[int(len(mat)/2):] # Определем 2-ую половину матрицы
-print(two_half, '\n')
+print("2-ая половина матрицы:", two_half, '\n')
 
 ob = reduce(lambda x, y: x + y, two_half) # Создаём из нескольких вложенных списков один общий список
-print(ob, '\n')
+print("Общий список:", ob, '\n')
 
 print("Cумма элементов второй половины матрицы:", reduce(lambda x, y: x + y, ob))
 
