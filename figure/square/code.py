@@ -1,6 +1,3 @@
-__all__ = ["square_perimeter", "square_area"]
-
-
 def square_perimeter(A=17):
     a = int(input("Сторона: "))
     if a == "":  # Если пользоваетель ничего не вёл
@@ -14,5 +11,3 @@ def square_area(A=17):
         a = A
     print("Площадь квадрата =", int(a) ** 2)
 
-
-square_area()

@@ -1,6 +1,3 @@
-__all__ = ["circle_perimetr", "circle_area"]
-
-
 def circle_perimetr(default_radius=int(5)):
     radius = int(input("Радиус: "))
     if radius == "":  # Если пользоваетель ничего не вёл
