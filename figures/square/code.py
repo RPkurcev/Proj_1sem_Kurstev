@@ -15,4 +15,4 @@ def square_area(A=17):
     print("Площадь квадрата =", int(a) ** 2)
 
 
-square_area()
+
