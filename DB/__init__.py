@@ -2,11 +2,23 @@ import sqlite3 as sq
 
 with sq.connect('saper.db') as con:
     cur = con.cursor()
-    cur.execute("""CREATE TABLE IF NOT EXISTS users(
-    user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-	name TEXT NOT NULL,
-	sex INTEGER NOT NULL DEFAULT 1,
-	'old' INTEGER,
-	score INTEGER)
-    """)
-    cur.execute("""INSERT INTO users VALUES (1, 'Алексей', 1, 22, 100)""")
+
+    cur.execute("""SELECT * FROM users""") # Выбираем всех игроков из таблицы
+    result = cur.fetchall()
+    print(result)
+
+    cur.execute("""SELECT * FROM users WHERE sex == 2""")  # Выбираем всех игроков женского пола
+    result = cur.fetchall()
+    print(result)
+
+    cur.execute("""SELECT * FROM users WHERE score < 1000""")  # Выбираем всех игроков у которых результат меньше 1000
+    result = cur.fetchall()
+    print(result)
+
+    cur.execute("""SELECT * FROM users WHERE score > 1000""")  # Выбираем всех игроков с наилучшим результатом
+    result = cur.fetchall()
+    print(result)
+
+    cur.execute("""SELECT * FROM users WHERE old 18 BETWEEN 18 AND 20""")  # Выбираем всех игроков с наилучшим результатом
+    result = cur.fetchall()
+    print(result)
