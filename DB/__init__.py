@@ -28,7 +28,14 @@ with sq.connect('saper.db') as con:
     result = cur.fetchall()
     print(result)
 
+    # Изменить возраст 19-летних игроков на 20
+    cur.execute("UPDATE users SET old = 20 WHERE old = 19")
 
+    # Всем игрокам, имеющим менее 1000 очков, добавить 300 очков
+    cur.execute("UPDATE users SET score = score + 300 WHERE score < 1000")
 
+    # Игрокам достигшим возраста 20 лет добавить 100 очков
+    cur.execute("UPDATE users SET score = score + 100 WHERE old = 20")
 
-
+    # Удалить игроков с результатом менее 1000 очков
+    cur.execute("DELETE FROM users WHERE score < 1000")
