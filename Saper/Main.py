@@ -1,4 +1,8 @@
 import tkinter as tk
+from tkinter import ttk
+import Child
+import sqlite3 as sq
+
 
 class Main(tk.Frame):
     """Класс для главного окна"""
@@ -11,7 +15,8 @@ class Main(tk.Frame):
         toolbar = tk.Frame(bg='#a0dea0', bd=4)
         toolbar.pack(side=tk.TOP, fill=tk.X)
         self.add_img = tk.PhotoImage(file="BD/11.gif")
-        btn_open_dialog = tk.Button(toolbar, text='Добавить игрока', command=self.open_dialog, bg='#5da130', bd=0,
+        btn_open_dialog = tk.Button(toolbar, text='Добавить игрока',
+                                    command=self.open_dialog, bg='#5da130', bd=0,
                                     compound=tk.TOP, image=self.add_img)
         btn_open_dialog.pack(side=tk.LEFT)
         self.tree = ttk.Treeview(self, columns=('user_id', 'name', 'sex',
@@ -28,22 +33,21 @@ class Main(tk.Frame):
         self.tree.heading('score', text='Результат игрока')
         self.tree.pack()
 
-
-def open_dialog(self):
-    Child(self)
+    def open_dialog(self):
+        Child(self)
 
 
 class DB:
-    with sq.connect('BD/saper.db') as con:
+    with sq.connect('../DB/saper.db') as con:
         cur = con.cursor()
         cur.execute("DROP TABLE IF EXISTS users")
         cur.execute("""CREATE TABLE IF NOT EXISTS users (
-        user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        sex INTEGER NOT NULL DEFAULT 1,
-        old INTEGER,
-        score INTEGER
-        )""")
+         user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+         name TEXT NOT NULL,
+         sex INTEGER NOT NULL DEFAULT 1,
+         old INTEGER,
+         score INTEGER
+         )""")
 
 
 if __name__ == "__main__":
