@@ -39,3 +39,5 @@ with sq.connect('saper.db') as con:
 
     # Удалить игроков с результатом менее 1000 очков
     cur.execute("DELETE FROM users WHERE score < 1000")
+
+

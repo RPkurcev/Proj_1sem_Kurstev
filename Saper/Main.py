@@ -1,6 +1,7 @@
 import tkinter as tk
+from Child import *
+from Search import *
 from tkinter import ttk
-import Child
 import sqlite3 as sq
 
 
@@ -14,11 +15,18 @@ class Main(tk.Frame):
     def init_main(self):
         toolbar = tk.Frame(bg='#a0dea0', bd=4)
         toolbar.pack(side=tk.TOP, fill=tk.X)
-        self.add_img = tk.PhotoImage(file="BD/11.gif")
+        self.add_img = tk.PhotoImage(file="BD_11.gif")
+        self.add_img_2 = tk.PhotoImage(file="Search.gif")
         btn_open_dialog = tk.Button(toolbar, text='Добавить игрока',
                                     command=self.open_dialog, bg='#5da130', bd=0,
                                     compound=tk.TOP, image=self.add_img)
         btn_open_dialog.pack(side=tk.LEFT)
+
+        btn_open_dialog_2 = tk.Button(toolbar, text='Поиск',
+                                    command=self.open_dialog_2, bg='#5da130', bd=0,
+                                    compound=tk.TOP, image=self.add_img_2)
+        btn_open_dialog_2.pack(side=tk.LEFT)
+
         self.tree = ttk.Treeview(self, columns=('user_id', 'name', 'sex',
                                                 'old', 'score'), height=15, show='headings')
         self.tree.column('user_id', width=50, anchor=tk.CENTER)
@@ -36,6 +44,8 @@ class Main(tk.Frame):
     def open_dialog(self):
         Child(self)
 
+    def open_dialog_2(self):
+        Search(self)
 
 class DB:
     with sq.connect('../DB/saper.db') as con:

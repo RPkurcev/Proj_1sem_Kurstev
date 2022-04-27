@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
 
-
 class Child(tk.Toplevel):
     """Класс для дочернего окна"""
 
