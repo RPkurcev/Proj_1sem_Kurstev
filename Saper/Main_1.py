@@ -17,18 +17,18 @@ class Main(tk.Frame):
         toolbar = tk.Frame(bg='#a0dea0', bd=4)
         toolbar.pack(side=tk.TOP, fill=tk.X)
 
-        self.add_img = tk.PhotoImage(file="BD_11.gif")
+        self.add_img = tk.PhotoImage(file="../PZ_16/BD_11.gif")
         self.btn_open_dialog = tk.Button(toolbar, text='Добавить игрока', command=self.open_dialog, bg='#5da130', bd=0,
                                     compound=tk.TOP, image=self.add_img)
         self.btn_open_dialog.pack(side=tk.LEFT)
 
-        self.add_img_2 = tk.PhotoImage(file="Search.gif")
+        self.add_img_2 = tk.PhotoImage(file="../PZ_16/Search.gif")
         btn_open_dialog_2 = tk.Button(toolbar, text='Поиск',
                                       command=self.open_dialog_2, bg='#5da130', bd=0,
                                       compound=tk.TOP, image=self.add_img_2)
         btn_open_dialog_2.pack(side=tk.LEFT)
 
-        self.update_img = tk.PhotoImage(file="Search.gif")
+        self.update_img = tk.PhotoImage(file="../PZ_16/Search.gif")
         btn_edit_dialog = tk.Button(toolbar, text="Редактировать", command=self.open_update_dialog, bg='#5da130',
                                     bd=0, compound=tk.TOP, image=self.update_img)
         btn_edit_dialog.pack(side=tk.LEFT)
