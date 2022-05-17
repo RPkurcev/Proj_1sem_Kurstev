@@ -8,13 +8,14 @@ class Main(tk.Frame):
         super().__init__(root)
         self.db = db
         self.init_main()
+        self.view_records()
 
     def init_main(self):
         toolbar = tk.Frame(bg='#a0dea0', bd=4)
         toolbar.pack(side=tk.TOP, fill=tk.X)
 
         self.add_img = tk.PhotoImage(file="BD_11.gif")
-        self.btn_open_dialog = tk.Button(toolbar, text='Добавить игрока', command=self.open_dialog, bg='#5da130', bd=0,
+        self.btn_open_dialog = tk.Button(toolbar, text='Добавить', command=self.open_dialog, bg='#5da130', bd=0,
                                          compound=tk.TOP, image=self.add_img)
         self.btn_open_dialog.pack(side=tk.LEFT)
 
@@ -22,6 +23,11 @@ class Main(tk.Frame):
         btn_search = tk.Button(toolbar, text="Командировачные расходы", command=self.open_search_dialog, bg='#5da130',
                                bd=0, compound=tk.TOP, image=self.search_img)
         btn_search.pack(side=tk.LEFT)
+
+        self.update_img = tk.PhotoImage(file="BD_11.gif")
+        btn_edit_dialog = tk.Button(toolbar, text="Редактировать", command=self.open_update_dialog, bg='#5da130',
+                                    bd=0, compound=tk.TOP, image=self.update_img)
+        btn_edit_dialog.pack(side=tk.LEFT)
 
         self.tree = ttk.Treeview(self, columns=('number_order', 'second_name', 'place_trip', 'payment', 'advance',
                                                 'type_expense', 'total_expense'), height=15, show='headings')
@@ -44,9 +50,22 @@ class Main(tk.Frame):
 
         self.tree.pack()
 
-    def records(self, user_id, name, sex, old, score):
-        self.db.insert_data(user_id, name, sex, old, score)
+    def records(self, number_order, second_name, place_trip, payment, advance, type_expense, total_expense):
+        self.db.insert_data(number_order, second_name, place_trip, payment, advance, type_expense, total_expense)
         self.view_records()
+
+    def update_record(self, number_order, second_name, place_trip, payment, advance, type_expense, total_expense):
+        self.db.cur.execute("""UPDATE travel_expenses SET number_order=?, second_name=?, place_trip=?, payment=?, 
+        advance=?, type_expense=?, total_expense =? WHERE number_order=?""",
+                            (number_order, second_name, place_trip, payment, advance, type_expense, total_expense,
+                             self.tree.set(self.tree.selection()[1], '#1')))
+        self.db.con.commit()
+        self.view_records()
+
+    def view_records(self):
+        self.db.cur.execute("""SELECT * FROM travel_expenses""")
+        [self.tree.delete(i) for i in self.tree.get_children()]
+        [self.tree.insert('', 'end', values=row) for row in self.db.cur.fetchall()]
 
     def search_travel_expense(self, second_name):
         second_name = (second_name,)
@@ -60,6 +79,9 @@ class Main(tk.Frame):
     def open_search_dialog(self):
         Search()
 
+    def open_update_dialog(self):
+        Update()
+
 
 class Child(tk.Toplevel):
     """Класс для дочернего окна"""
@@ -71,44 +93,56 @@ class Child(tk.Toplevel):
 
     def init_child(self):
         self.title('Добавить')
-        self.geometry('400x220+400+300')
+        self.geometry('400x280')
         self.resizable(False, False)
 
         label_order = tk.Label(self, text='№ приказа')
         label_order.place(x=50, y=25)
         self.entry_order = ttk.Entry(self)
-        self.entry_order.place(x=110, y=25)
+        self.entry_order.place(x=175, y=25)
 
-        label_name = tk.Label(self, text='Фамилия')
-        label_name.place(x=50, y=50)
-        self.entry_name = ttk.Entry(self)
-        self.entry_name.place(x=110, y=50)
+        label_second_name = tk.Label(self, text='Фамилия')
+        label_second_name.place(x=50, y=50)
+        self.entry_second_name = ttk.Entry(self)
+        self.entry_second_name.place(x=175, y=50)
 
-        label_sex = tk.Label(self, text='Место командировки')
-        label_sex.place(x=50, y=75)
-        self.entry_name = ttk.Entry(self)
-        self.combobox.place(x=110, y=75)
+        label_place = tk.Label(self, text='Место командировки')
+        label_place.place(x=50, y=75)
+        self.entry_place = ttk.Entry(self)
+        self.entry_place.place(x=175, y=75)
 
-        label_old = tk.Label(self, text='Возраст')
-        label_old.place(x=50, y=100)
-        self.entry_old = ttk.Entry(self)
-        self.entry_old.place(x=110, y=100)
+        label_payment = tk.Label(self, text='Оплата')
+        label_payment.place(x=50, y=100)
+        self.entry_payment = ttk.Entry(self)
+        self.entry_payment.place(x=175, y=100)
 
-        label_score = tk.Label(self, text='Результат')
-        label_score.place(x=50, y=125)
-        self.entry_score = ttk.Entry(self)
-        self.entry_score.place(x=110, y=125)
+        label_advance = tk.Label(self, text='Аванс')
+        label_advance.place(x=50, y=125)
+        self.entry_advance = ttk.Entry(self)
+        self.entry_advance.place(x=175, y=125)
+
+        label_type_expense = tk.Label(self, text='Вид расхода')
+        label_type_expense.place(x=50, y=150)
+        self.entry_type_expense = ttk.Entry(self)
+        self.entry_type_expense.place(x=175, y=150)
+
+        label_total_expense = tk.Label(self, text='Сумма расходов')
+        label_total_expense.place(x=50, y=175)
+        self.entry_total_expense = ttk.Entry(self)
+        self.entry_total_expense.place(x=175, y=175)
 
         btn_cancel = ttk.Button(self, text='Закрыть', command=self.destroy)
-        btn_cancel.place(x=300, y=170)
+        btn_cancel.place(x=300, y=205)
 
         self.btn_ok = ttk.Button(self, text='Добавить')
-        self.btn_ok.place(x=220, y=170)
-        self.btn_ok.bind('<Button-1>', lambda event: self.view.records(self.entry_description.get(),
-                                                                       self.entry_name.get(),
-                                                                       self.combobox.get(),
-                                                                       self.entry_old.get(),
-                                                                       self.entry_score.get()))
+        self.btn_ok.place(x=220, y=205)
+        self.btn_ok.bind('<Button-1>', lambda event: self.view.records(self.entry_order.get(),
+                                                                       self.entry_second_name.get(),
+                                                                       self.entry_place.get(),
+                                                                       self.entry_payment.get(),
+                                                                       self.entry_advance.get(),
+                                                                       self.entry_type_expense.get(),
+                                                                       self.entry_total_expense.get()))
 
         self.grab_set()
         self.focus_set()
@@ -140,6 +174,26 @@ class Search(tk.Toplevel):
         btn_search.bind('<Button-1>', lambda event: self.destroy(), add='+')
 
 
+class Update(Child):
+    def __init__(self):
+        super().__init__(root, app)
+        self.init_edit()
+        self.view = app
+
+    def init_edit(self):
+        self.title("Редактировать запись")
+        btn_edit = ttk.Button(self, text="Редактировать")
+        btn_edit.place(x=205, y=205)
+        btn_edit.bind('<Button-1>', lambda event: self.view.update_record(self.entry_order.get(),
+                                                                          self.entry_second_name.get(),
+                                                                          self.entry_place.get(),
+                                                                          self.entry_payment.get(),
+                                                                          self.entry_advance.get(),
+                                                                          self.entry_type_expense.get(),
+                                                                          self.entry_total_expense.get()))
+        self.btn_ok.destroy()
+
+
 class DB:
     def __init__(self):
         with sq.connect('travel_expenses.db') as self.con:
@@ -154,9 +208,10 @@ class DB:
                 total_expense REAL NULL
                 )"""))
 
-    def insert_data(self, user_id, name, sex, old, score):
-        self.cur.execute("""INSERT INTO users(user_id, name, sex, old, score) VALUES (?, ?, ?, ?, ?)""",
-                         (user_id, name, sex, old, score))
+    def insert_data(self, number_order, second_name, place_trip, payment, advance, type_expense, total_expense):
+        self.cur.execute("""INSERT INTO travel_expenses(number_order, second_name, place_trip, payment, advance, type_expense, total_expense) 
+        VALUES (?, ?, ?, ?, ?, ?, ?)""",
+                         (number_order, second_name, place_trip, payment, advance, type_expense, total_expense))
         self.con.commit()
 
 
