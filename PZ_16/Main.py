@@ -14,7 +14,7 @@ class Main(tk.Frame):
         toolbar = tk.Frame(bg='#a0dea0', bd=4)
         toolbar.pack(side=tk.TOP, fill=tk.X)
 
-        self.add_img = tk.PhotoImage(file="BD_11.gif")
+        self.add_img = tk.PhotoImage(file="../Saper/BD_11.gif")
         self.btn_open_dialog = tk.Button(toolbar, text='Добавить', command=self.open_dialog, bg='#5da130', bd=0,
                                          compound=tk.TOP, image=self.add_img)
         self.btn_open_dialog.pack(side=tk.LEFT)
@@ -24,7 +24,7 @@ class Main(tk.Frame):
                                bd=0, compound=tk.TOP, image=self.search_img)
         btn_search.pack(side=tk.LEFT)
 
-        self.update_img = tk.PhotoImage(file="BD_11.gif")
+        self.update_img = tk.PhotoImage(file="../Saper/BD_11.gif")
         btn_edit_dialog = tk.Button(toolbar, text="Редактировать", command=self.open_update_dialog, bg='#5da130',
                                     bd=0, compound=tk.TOP, image=self.update_img)
         btn_edit_dialog.pack(side=tk.LEFT)
@@ -57,8 +57,7 @@ class Main(tk.Frame):
     def update_record(self, number_order, second_name, place_trip, payment, advance, type_expense, total_expense):
         self.db.cur.execute("""UPDATE travel_expenses SET number_order=?, second_name=?, place_trip=?, payment=?, 
         advance=?, type_expense=?, total_expense =? WHERE number_order=?""",
-                            (number_order, second_name, place_trip, payment, advance, type_expense, total_expense,
-                             self.tree.set(self.tree.selection()[1], '#1')))
+                            (number_order, second_name, place_trip, payment, advance, type_expense, total_expense, number_order))
         self.db.con.commit()
         self.view_records()
 
@@ -73,6 +72,13 @@ class Main(tk.Frame):
         [self.tree.delete(i) for i in self.tree.get_children()]
         [self.tree.insert('', 'end', values=row) for row in self.db.cur.fetchall()]
 
+    def delete_records(self, number_order):
+        number_order = (number_order,)
+        self.db.cur.execute("""DELETE FROM travel_expenses WHERE number_order =? """, number_order)
+        self.db.con.commit()
+        self.view_records()
+
+
     def open_dialog(self):
         Child(root, app)
 
@@ -81,6 +87,35 @@ class Main(tk.Frame):
 
     def open_update_dialog(self):
         Update()
+
+    def open_delete_dialog(self):
+        Delete()
+
+
+class Search(tk.Toplevel):
+    def __init__(self):
+        super().__init__()
+        self.init_search()
+        self.view = app
+
+    def init_search(self):
+        self.title("Поиск")
+        self.geometry("300x100+400+300")
+        self.resizable(False, False)
+
+        label_search = tk.Label(self, text="Поиск")
+        label_search.place(x=50, y=20)
+
+        self.entry_search = ttk.Entry(self)
+        self.entry_search.place(x=105, y=20, width=150)
+
+        btn_cancel = ttk.Button(self, text="Закрыть", command=self.destroy)
+        btn_cancel.place(x=185, y=50)
+
+        btn_search = ttk.Button(self, text="Поиск")
+        btn_search.place(x=105, y=50)
+        btn_search.bind('<Button-1>', lambda event: self.view.search_travel_expense(self.entry_search.get()))
+        btn_search.bind('<Button-1>', lambda event: self.destroy(), add='+')
 
 
 class Child(tk.Toplevel):
@@ -148,32 +183,6 @@ class Child(tk.Toplevel):
         self.focus_set()
 
 
-class Search(tk.Toplevel):
-    def __init__(self):
-        super().__init__()
-        self.init_search()
-        self.view = app
-
-    def init_search(self):
-        self.title("Поиск")
-        self.geometry("300x100+400+300")
-        self.resizable(False, False)
-
-        label_search = tk.Label(self, text="Поиск")
-        label_search.place(x=50, y=20)
-
-        self.entry_search = ttk.Entry(self)
-        self.entry_search.place(x=105, y=20, width=150)
-
-        btn_cancel = ttk.Button(self, text="Закрыть", command=self.destroy)
-        btn_cancel.place(x=185, y=50)
-
-        btn_search = ttk.Button(self, text="Поиск")
-        btn_search.place(x=105, y=50)
-        btn_search.bind('<Button-1>', lambda event: self.view.search_travel_expense(self.entry_search.get()))
-        btn_search.bind('<Button-1>', lambda event: self.destroy(), add='+')
-
-
 class Update(Child):
     def __init__(self):
         super().__init__(root, app)
@@ -192,6 +201,25 @@ class Update(Child):
                                                                           self.entry_type_expense.get(),
                                                                           self.entry_total_expense.get()))
         self.btn_ok.destroy()
+
+class Delete(tk.Toplevel):
+    def __init__(self, root, app):
+        super().__init__(root, app)
+        self.init_delete()
+        self.view = app
+
+    def init_delete(self):
+        self.title("Удалить запись")
+        self.geometry('400x280')
+        self.resizable(False, False)
+
+        self.btn_edit = ttk.Button(self, text="Удалить")
+        self.btn_edit.place(x=205, y=205)
+        self.btn_edit.bind('<Button-1>', lambda event: self.view.delete_records(self.entry_order.get()))
+
+        self.grab_set()
+        self.focus_set()
+
 
 
 class DB:

@@ -17,27 +17,27 @@ class Main(tk.Frame):
         toolbar = tk.Frame(bg='#a0dea0', bd=4)
         toolbar.pack(side=tk.TOP, fill=tk.X)
 
-        self.add_img = tk.PhotoImage(file="BD/11.gif")
+        self.add_img = tk.PhotoImage(file="BD_11.gif")
         self.btn_open_dialog = tk.Button(toolbar, text='Добавить игрока', command=self.open_dialog, bg='#5da130', bd=0,
                                     compound=tk.TOP, image=self.add_img)
         self.btn_open_dialog.pack(side=tk.LEFT)
 
-        self.update_img = tk.PhotoImage(file="BD/12.gif")
+        self.update_img = tk.PhotoImage(file="BD_11.gif")
         btn_edit_dialog = tk.Button(toolbar, text="Редактировать", command=self.open_update_dialog, bg='#5da130',
                                     bd=0, compound=tk.TOP, image=self.update_img)
         btn_edit_dialog.pack(side=tk.LEFT)
 
-        self.delete_img = tk.PhotoImage(file="BD/13.gif")
+        self.delete_img = tk.PhotoImage(file="BD_11.gif")
         btn_delete = tk.Button(toolbar, text="Удалить запись", command=self.delete_records, bg='#5da130',
                                     bd=0, compound=tk.TOP, image=self.delete_img)
         btn_delete.pack(side=tk.LEFT)
 
-        self.search_img = tk.PhotoImage(file="BD/14.gif")
+        self.search_img = tk.PhotoImage(file="BD_11.gif")
         btn_search = tk.Button(toolbar, text="Поиск записи", command=self.open_search_dialog, bg='#5da130',
                                bd=0, compound=tk.TOP, image=self.search_img)
         btn_search.pack(side=tk.LEFT)
 
-        self.refresh_img = tk.PhotoImage(file="BD/15.gif")
+        self.refresh_img = tk.PhotoImage(file="BD_11.gif")
         btn_refresh = tk.Button(toolbar, text="Обновить экран", command=self.view_records, bg='#5da130',
                                bd=0, compound=tk.TOP, image=self.refresh_img)
         btn_refresh.pack(side=tk.LEFT)
@@ -200,7 +200,7 @@ class Search(tk.Toplevel):
 class DB:
     def __init__(self):
 
-        with sq.connect('DB/saper.db') as self.con:
+        with sq.connect('saper.db') as self.con:
             self.cur = self.con.cursor()
             self.cur.execute("""CREATE TABLE IF NOT EXISTS users (
                 user_id INTEGER PRIMARY KEY AUTOINCREMENT,

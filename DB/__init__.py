@@ -13,9 +13,7 @@ with sq.connect('../PZ_16/travel_expenses.db') as con:
                 total_expense REAL NULL
                 )"""))
 
+    cur.execute("""UPDATE travel_expenses SET number_order=?, second_name=?, place_trip=?, payment=?, 
+        advance=?, type_expense=?, total_expense =? WHERE number_order=?""", (1, "Иванов", "г.Ростов-на-Дону", 10000, 2000, "на что-то", 12000, 1))
 
-    cur.execute("""SELECT * FROM travel_expenses WHERE second_name = "Иванов" """)
 
-    resault = cur.fetchall()
-
-    print(resault)
