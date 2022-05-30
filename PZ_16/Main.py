@@ -1,3 +1,11 @@
+# Приложение КОММАНДИРОВОЧНЫЕ РАСХОДЫ для автоматизированного
+# финансового контроля на предприятии. БД должна содержать таблицу Статьи расходов,
+# имеющую следующую структуру записи: № приказа, Фамилия, Место командировки,
+# Оплата, Аванс, Вид расходов, Сумма расходов.
+# БД должна обеспечивать получение информации о командировочных расходах по
+# фамилии командированного.
+
+
 import sqlite3 as sq
 import tkinter as tk
 from tkinter import ttk
@@ -14,27 +22,27 @@ class Main(tk.Frame):
         toolbar = tk.Frame(bg='#a0dea0', bd=4)
         toolbar.pack(side=tk.TOP, fill=tk.X)
 
-        self.add_img = tk.PhotoImage(file="BD_11.gif")
+        self.add_img = tk.PhotoImage(file="edit.png")
         self.btn_open_dialog = tk.Button(toolbar, text='Добавить', command=self.open_dialog, bg='#5da130', bd=0,
                                          compound=tk.TOP, image=self.add_img)
         self.btn_open_dialog.pack(side=tk.LEFT)
 
-        self.search_img = tk.PhotoImage(file="Search.gif")
+        self.search_img = tk.PhotoImage(file="edit_2.png")
         btn_search = tk.Button(toolbar, text="Командировачные расходы", command=self.open_search_dialog, bg='#5da130',
                                bd=0, compound=tk.TOP, image=self.search_img)
         btn_search.pack(side=tk.LEFT)
 
-        self.update_img = tk.PhotoImage(file="BD_11.gif")
+        self.update_img = tk.PhotoImage(file="edit_3.png")
         btn_edit_dialog = tk.Button(toolbar, text="Редактировать", command=self.open_update_dialog, bg='#5da130',
                                     bd=0, compound=tk.TOP, image=self.update_img)
         btn_edit_dialog.pack(side=tk.LEFT)
 
-        self.delete_img = tk.PhotoImage(file="BD_11.gif")
+        self.delete_img = tk.PhotoImage(file="edit_4.png")
         btn_delete = tk.Button(toolbar, text="Удалить запись", command=self.open_delete_dialog, bg='#5da130',
                                bd=0, compound=tk.TOP, image=self.delete_img)
         btn_delete.pack(side=tk.LEFT)
 
-        self.refresh_img = tk.PhotoImage(file="BD_11.gif")
+        self.refresh_img = tk.PhotoImage(file="edit_5.png")
         btn_refresh = tk.Button(toolbar, text="Обновить экран", command=self.view_records, bg='#5da130',
                                 bd=0, compound=tk.TOP, image=self.refresh_img)
         btn_refresh.pack(side=tk.LEFT)
