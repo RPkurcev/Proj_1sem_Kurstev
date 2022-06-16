@@ -5,14 +5,15 @@ def craete_lists():
     print("Введите числа для 2-го списка:")
     lis_2 = [int(s) for s in input().split()]
 
-    lis_3 = [lis] + [lis_2]
-    return lis, lis_2, lis_3
+    return lis, lis_2
 
 
-def count_denial_elements(x):
+def add_elements(x, c):
     s = sum(list(x))
-    print("Сумма: ", s)
+    s_2 = sum(list(c))
+
+    print("Сумма: ", s + s_2)
 
 
-c = craete_lists()
-summ = count_denial_elements(c)
+list_1, list_2 = craete_lists()
+summ = add_elements(list_1, list_2)

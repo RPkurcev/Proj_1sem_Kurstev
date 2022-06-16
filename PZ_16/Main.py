@@ -27,8 +27,9 @@ class Main(tk.Frame):
                                          compound=tk.TOP, image=self.add_img)
         self.btn_open_dialog.pack(side=tk.LEFT)
 
+
         self.search_img = tk.PhotoImage(file="edit_2.png")
-        btn_search = tk.Button(toolbar, text="Командировачные расходы", command=self.open_search_dialog, bg='#5da130',
+        btn_search = tk.Button(toolbar, text="Поиск", command=self.open_search_dialog, bg='#5da130',
                                bd=0, compound=tk.TOP, image=self.search_img)
         btn_search.pack(side=tk.LEFT)
 
@@ -46,6 +47,8 @@ class Main(tk.Frame):
         btn_refresh = tk.Button(toolbar, text="Обновить экран", command=self.view_records, bg='#5da130',
                                 bd=0, compound=tk.TOP, image=self.refresh_img)
         btn_refresh.pack(side=tk.LEFT)
+
+
 
         self.tree = ttk.Treeview(self, columns=('number_order', 'second_name', 'place_trip', 'payment', 'advance',
                                                 'type_expense', 'total_expense'), height=15, show='headings')
@@ -95,6 +98,8 @@ class Main(tk.Frame):
         number_order = (number_order,)
         self.db.cur.execute(f"""DELETE FROM travel_expenses WHERE number_order = ? """, number_order)
         self.view_records()
+
+
 
     def open_dialog(self):
         Child(root, app)
